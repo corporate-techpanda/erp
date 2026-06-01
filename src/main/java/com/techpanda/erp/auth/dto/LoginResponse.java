@@ -1,6 +1,9 @@
 package com.techpanda.erp.auth.dto;
 
 public record LoginResponse(
-        String token
+        Long userId,
+        String accessToken,
+        String email,
+        String role
 ) {
 }
