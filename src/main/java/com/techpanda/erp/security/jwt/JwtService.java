@@ -1,5 +1,6 @@
 package com.techpanda.erp.security.jwt;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -47,13 +48,18 @@ public class JwtService {
             String token,
             UserDetails userDetails
     ) {
+        try {
 
-        final String username =
-                extractUsername(token);
+            final String username = extractUsername(token);
 
-        return username.equals(
-                userDetails.getUsername()
-        ) && !isTokenExpired(token);
+            return username.equals(userDetails.getUsername())
+                    && !isTokenExpired(token);
+
+        } catch (JwtException e) {
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public boolean isTokenExpired(
