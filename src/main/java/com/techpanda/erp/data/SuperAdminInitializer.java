@@ -43,7 +43,7 @@ public class SuperAdminInitializer implements CommandLineRunner {
                 .orElseThrow();
 
         Branch branch = branchRepository
-                .findByBranchCode("TP-01")
+                .findByBranchCode("HO001")
                 .orElseThrow();
 
         User user = new User();

@@ -21,13 +21,19 @@ public class BranchDataInitializer implements CommandLineRunner {
             return;
         }
 
-        Branch branch = new Branch();
+        Branch headOffice = new Branch();
+        headOffice.setName("Head Office - Only For Super Admin");
+        headOffice.setBranchCode("HO001");
+        headOffice.setLocation("Chennai HQ");
+        headOffice.setActive(true);
 
-        branch.setName("T-Nagar");
-        branch.setBranchCode("TP-01");
-        branch.setLocation("Tnagar - Chennai");
-        branch.setActive(true);
+        Branch tnagar = new Branch();
+        tnagar.setName("T-Nagar");
+        tnagar.setBranchCode("TP001");
+        tnagar.setLocation("T-Nagar, Chennai");
+        tnagar.setActive(true);
 
-        branchRepository.save(branch);
+        branchRepository.save(headOffice);
+        branchRepository.save(tnagar);
     }
 }

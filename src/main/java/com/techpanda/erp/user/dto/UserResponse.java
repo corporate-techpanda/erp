@@ -7,7 +7,8 @@ public record UserResponse(
         String email,
         String role,
         String branch,
-        boolean enabled
+        boolean enabled,
+        String createdBy
 
 ) {
 }

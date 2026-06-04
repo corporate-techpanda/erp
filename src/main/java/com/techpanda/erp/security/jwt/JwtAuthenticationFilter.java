@@ -1,5 +1,6 @@
 package com.techpanda.erp.security.jwt;
 
+import com.techpanda.erp.common.exception.UnauthorizedAccess;
 import com.techpanda.erp.security.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -59,9 +60,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }catch (Exception e) {
-            e.printStackTrace();
-            logger.warn("INVALID_JWT_TOKEN");
-            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            response.getWriter().write("""
+        {
+            "status": 401,
+            "message": "Invalid authentication token"
+        }
+        """);
+
+            return;
         }
         filterChain.doFilter(request, response);
     }

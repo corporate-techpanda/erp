@@ -1,6 +1,7 @@
 package com.techpanda.erp.user.controller;
 
 import com.techpanda.erp.user.dto.CreateUserRequest;
+import com.techpanda.erp.user.dto.UpdateUserStatusRequest;
 import com.techpanda.erp.user.dto.UserResponse;
 import com.techpanda.erp.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,24 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public ResponseEntity<List<UserResponse>> getUser(){
         return ResponseEntity.ok(userService.getUsers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id){
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    public ResponseEntity<UserResponse> updateStatus(@PathVariable Long id,
+                                                     @RequestBody UpdateUserStatusRequest  updateUserStatusRequest
+    ){
+        return ResponseEntity.ok(
+                userService.updateUserStatus(id,updateUserStatusRequest)
+        );
     }
 }

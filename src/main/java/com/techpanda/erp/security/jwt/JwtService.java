@@ -1,5 +1,6 @@
 package com.techpanda.erp.security.jwt;
 
+import com.techpanda.erp.common.exception.UnauthorizedAccess;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -36,12 +37,20 @@ public class JwtService {
     }
 
     public String extractUsername(String token) {
-        return Jwts.parser()
-                .verifyWith(getSigningKey())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
+        try {
+
+            return Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getSubject();
+
+        } catch (JwtException e) {
+            throw new UnauthorizedAccess(
+                    "Invalid authentication token"
+            );
+        }
     }
 
     public boolean isTokenValid(
