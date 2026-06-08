@@ -1,5 +1,7 @@
 package com.techpanda.erp.security.config;
 
+import com.techpanda.erp.security.handler.CustomAccessDeniedHandler;
+import com.techpanda.erp.security.handler.CustomAuthenticationEntryPoint;
 import com.techpanda.erp.security.jwt.JwtAuthenticationFilter;
 import com.techpanda.erp.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +38,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            CustomAccessDeniedHandler  customAccessDeniedHandler,
+            CustomAuthenticationEntryPoint customAuthenticationEntryPoint
+
+    ) throws Exception {
         http
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
                 .cors(cors->{})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth->auth
