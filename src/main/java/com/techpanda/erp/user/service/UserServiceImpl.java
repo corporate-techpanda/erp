@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
                 );
 
         Branch branch = branchRepository
-                .findById(Math.toIntExact(request.branchId()))
+                .findById(request.branchId())
                 .orElseThrow(() ->
                         new BranchNotFoundException(
                                 "Branch not found"

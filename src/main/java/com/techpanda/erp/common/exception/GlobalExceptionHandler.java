@@ -3,6 +3,7 @@ package com.techpanda.erp.common.exception;
 import com.techpanda.erp.common.dto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,5 +43,18 @@ public class GlobalExceptionHandler {
                                 ex.getMessage()
                         )
                 );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleMissingBody(
+            HttpMessageNotReadableException ex) {
+
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                404,
+                "Request body is required"
+        );
+
+        return ResponseEntity.badRequest().body(response);
     }
 }
